@@ -1,9 +1,12 @@
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Scanner;
 
 class Matrice {
   private double[][] matrice = new double[3][5];
   private double[] coefficientiNoti = new double[3];
   private double[] funzioneObiettivo = new double[5];
+  NumberFormat nf = new DecimalFormat("##.###");
 
   public Matrice(double[][] matrice, double[] coefficientiNoti, double[] funzioneObiettivo) {
     this.matrice = matrice;
@@ -85,7 +88,7 @@ class Matrice {
     System.out.println("funzione obiettivo");
     for (int i = 0; i < funzioneObiettivo.length; i++) {
       if (funzioneObiettivo[i] != 0) {
-        System.out.print(funzioneObiettivo[i] + "x" + c[i] + " ");
+        System.out.print(nf.format(funzioneObiettivo[i]) + "x" + c[i] + " ");
       }
     }
     System.out.println("\n");
@@ -97,9 +100,9 @@ class Matrice {
     System.out.println("stampo la matrice");
     for (int i = 0; i < matrice.length; i++) {
       for (int j = 0; j < matrice[i].length; j++) {
-        System.out.print(matrice[i][j] + "\t");
+        System.out.print(nf.format(matrice[i][j]) + "\t");
       }
-      System.out.print("| " + coefficientiNoti[i]);
+      System.out.print("| " + nf.format(coefficientiNoti[i]));
       System.out.println();
     }
   }
