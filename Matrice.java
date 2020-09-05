@@ -1,5 +1,6 @@
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.Arrays;
 import java.util.Scanner;
 
 class Matrice {
@@ -55,6 +56,45 @@ class Matrice {
     return result;
   }
 
+  public void cambioBase (int rigaPivot, int colonnaPivot){
+    /*if (matrice[rigaPivot][colonnaPivot]==0){
+      FIXME:caso posssibile ma mai incontrato in un esercizio. se lo trovo lo includo
+    }*/
+    double valoreMoltiplicativo;
+    double valorePivot = matrice[rigaPivot][colonnaPivot];
+
+    if (matrice[rigaPivot][colonnaPivot]<0) {
+      for (int i = 0; i < matrice[rigaPivot].length; i++) {
+        matrice[rigaPivot][i]=-matrice[rigaPivot][i];
+      }
+    }
+    //riduzione della riga del pivot in modo che quest'ultimo sia 1
+    if (matrice[rigaPivot][colonnaPivot]!=1) {
+      for (int i = 0; i < matrice[rigaPivot].length; i++) {
+        matrice[rigaPivot][i] = matrice[rigaPivot][i] == 0 ? 0 : matrice[rigaPivot][i] / valorePivot;
+        coefficientiNoti[rigaPivot] = coefficientiNoti[rigaPivot] == 0 ? 0 : coefficientiNoti[rigaPivot] / valorePivot;
+      }
+    }
+    // riduzione delle altre 2 righe per ottenere un vettore linearmente indipendente (porto a zero i valori aventi
+    // la stessa colonna del pivot)
+    for (int i = 0; i < matrice.length ; i++) {
+      if (i==rigaPivot) //questo procedimento non va ovviamente eseguito per la riga del pivot
+        continue;
+      valoreMoltiplicativo = matrice[i][colonnaPivot]/1; // diviso 1 per sapere se mettere il segno meno
+      for (int j = 0; j <matrice[i].length ; j++) {
+        matrice[i][j]= matrice[i][j]-valoreMoltiplicativo*matrice[rigaPivot][j];
+        coefficientiNoti[i]=coefficientiNoti[i]-valoreMoltiplicativo*coefficientiNoti[rigaPivot];
+      }
+    }
+
+    this.aggiornaFunzioneObbiettivo();
+  }
+
+  public void aggiornaFunzioneObbiettivo(){
+    //TODO:da scrivere
+  }
+
+  /*TODO: da testare*/
   public int[] trovaVariabileUscente() {
     System.out.println("uno");
     int[] elemento = {-1, trovaVariabileEntrante()};
