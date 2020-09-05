@@ -5,7 +5,13 @@ class Matrice {
   private double[] coefficientiNoti = new double[3];
   private double[] funzioneObiettivo = new double[5];
 
-  public void inizializzoMatrice() {
+  public Matrice(double[][] matrice, double[] coefficientiNoti, double[] funzioneObiettivo) {
+    this.matrice = matrice;
+    this.coefficientiNoti = coefficientiNoti;
+    this.funzioneObiettivo = funzioneObiettivo;
+  }
+
+  public Matrice(){
     Scanner keyboard = new Scanner(System.in);
 
     System.out.println("inizializzo funzione obiettivo");
