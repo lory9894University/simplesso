@@ -1,9 +1,10 @@
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.Arrays;
 import java.util.Scanner;
 
 class Matrice {
+    private boolean debugIsOn = false;
+
     private double[][] matrice = new double[3][5];
     private double[] coefficientiNoti = new double[3];
     private double[] funzioneObiettivo = new double[5];
@@ -19,9 +20,9 @@ class Matrice {
         Scanner keyboard = new Scanner(System.in);
 
         System.out.println("inizializzo funzione obiettivo");
-        System.out.print("x1:\t");
+        System.out.print("x₁:\t");
         funzioneObiettivo[0] = keyboard.nextInt();
-        System.out.print("x2:\t");
+        System.out.print("x₂:\t");
         funzioneObiettivo[1] = keyboard.nextInt();
         System.out.println();
 
@@ -39,26 +40,9 @@ class Matrice {
         }
     }
 
-    public int trovaVariabileEntrante() {
-        int result = -1;
-        double max = -1;
-
-        for (int i = 0; i < funzioneObiettivo.length; i++) {
-            if (funzioneObiettivo[i] > 0 && funzioneObiettivo[i] > max) {
-                max = funzioneObiettivo[i];
-                result = i;
-            }
-        }
-
-        if (result > -1) System.out.println("result " + result);
-        else System.out.println("end!");
-
-        return result;
-    }
-
     public void cambioBase(int rigaPivot, int colonnaPivot) {
     /*if (matrice[rigaPivot][colonnaPivot]==0){
-      FIXME:caso posssibile ma mai incontrato in un esercizio. se lo trovo lo includo
+      FIXME:caso possibile ma mai incontrato in un esercizio. se lo trovo lo includo
     }*/
         double valoreMoltiplicativo;
         double valorePivot = matrice[rigaPivot][colonnaPivot];
@@ -68,6 +52,7 @@ class Matrice {
                 matrice[rigaPivot][i] = -matrice[rigaPivot][i];
             }
         }
+
         //riduzione della riga del pivot in modo che quest'ultimo sia 1
         if (matrice[rigaPivot][colonnaPivot] != 1) {
             for (int i = 0; i < matrice[rigaPivot].length; i++) {
@@ -75,11 +60,13 @@ class Matrice {
                 coefficientiNoti[rigaPivot] = coefficientiNoti[rigaPivot] == 0 ? 0 : coefficientiNoti[rigaPivot] / valorePivot;
             }
         }
+
         // riduzione delle altre 2 righe per ottenere un vettore linearmente indipendente (porto a zero i valori aventi
         // la stessa colonna del pivot)
         for (int i = 0; i < matrice.length; i++) {
             if (i == rigaPivot) //questo procedimento non va ovviamente eseguito per la riga del pivot
                 continue;
+
             valoreMoltiplicativo = matrice[i][colonnaPivot] / 1; // diviso 1 per sapere se mettere il segno meno
             for (int j = 0; j < matrice[i].length; j++) {
                 matrice[i][j] = matrice[i][j] - valoreMoltiplicativo * matrice[rigaPivot][j];
@@ -94,27 +81,46 @@ class Matrice {
         //TODO:da scrivere
     }
 
+    public int trovaVariabileEntrante() {
+        int result = -1;
+        double max = -1;
+
+        for (int i = 0; i < funzioneObiettivo.length; i++) {
+            if (funzioneObiettivo[i] > 0 && funzioneObiettivo[i] > max) {
+                max = funzioneObiettivo[i];
+                result = i;
+            }
+        }
+
+        if (debugIsOn) {
+            if (result > -1) System.out.println("result " + result);
+            else System.out.println("end!");
+        }
+
+        return result;
+    }
+
     /*TODO: da testare*/
     public int[] trovaVariabileUscente() {
-        System.out.println("uno");
+        if (debugIsOn) System.out.println("uno");
         int[] elemento = {-1, trovaVariabileEntrante()};
 
         if (elemento[1] > -1) {
-            System.out.println("colonna " + elemento[1]);
+            if (debugIsOn) System.out.println("colonna " + elemento[1]);
 
             double minimo = Double.MAX_VALUE;
             for (int i = 0; i < matrice.length && elemento[1] > -1; i++) {
                 double valoreI = matrice[i][elemento[1]] / coefficientiNoti[i];
                 if (valoreI > 0 && valoreI < minimo) {
-                    System.out.println("i " + i + " valoreI " + valoreI);
+                    if (debugIsOn) System.out.println("i " + i + " valoreI " + valoreI);
                     minimo = valoreI;
                     elemento[1] = i;
                 }
-                System.out.println("minimo " + minimo);
+                if (debugIsOn) System.out.println("minimo " + minimo);
             }
         }
 
-        if (elemento[0] > -1 && elemento[1] > -1) {
+        if (debugIsOn && elemento[0] > -1 && elemento[1] > -1) {
             System.out.println("riga " + elemento[0] + " colonna " + elemento[1]);
             System.out.println("pivot " + matrice[elemento[0]][elemento[1]]);
         }

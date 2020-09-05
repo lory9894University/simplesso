@@ -10,11 +10,7 @@ import static java.util.stream.Collectors.toList;
 class Simplesso {
     public static void main(String[] args) {
 
-        /*
-        TEST PUSH
-         */
         Matrice matrice;
-        boolean trovatoMassimo = false;
         boolean illimitata = false;
         boolean troppiCicli = false;
         int counter = 0;
@@ -24,7 +20,8 @@ class Simplesso {
             matrice = new Matrice();
         } else {
             if (args[0].equals("-h")) {
-                System.out.println("inserire come argomento il path del file contenente:\ncoefficienti della funzione obbiettivo\nmatrice dei coefficienti\n\n" +
+                System.out.println("inserire come argomento il path del file contenente:\n" +
+                        "coefficienti della funzione obbiettivo\nmatrice dei coefficienti\n\n" +
                         "Esempio:\n2 1\n1 1 1 0 0 1\n1 3 0 1 0 6\n1 0 0 0 1 4\n");
             }
             matrice = fileParsing(args[0]);
@@ -32,7 +29,7 @@ class Simplesso {
         }
         matrice.stampaMatrice();
 
-        trovatoMassimo = matrice.trovaVariabileEntrante() == -1;
+        boolean trovatoMassimo = matrice.trovaVariabileEntrante() == -1;
 
         while (!trovatoMassimo && !illimitata && !troppiCicli) {
             illimitata = matrice.trovaVariabileUscente()[0] == -1;
@@ -43,7 +40,7 @@ class Simplesso {
 
         if (trovatoMassimo) System.out.println("trovata la soluzione");
         else if (illimitata) System.out.println("il sistema é illimitato");
-        else if (troppiCicli) System.out.println("errore!");
+        else System.out.println("errore!");
 
     }
 
@@ -60,25 +57,27 @@ class Simplesso {
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
+
         if (lines == null) {
             System.out.println("non riesco a leggere il file\n");
             exit(1);
         }
 
         for (String line : lines) {
-            if (i == 0) {
+            if (i == 0)
                 targetFunction = Arrays.stream(line.split(" ")).map(Double::valueOf).mapToDouble(Double::doubleValue).toArray();
-                i++;
-            } else {
+            else {
                 sub = line.split(" ");
                 for (int j = 0; j < 5; j++)
                     matrice[i - 1][j] = Double.parseDouble(sub[j]);
                 knownCoeff[i - 1] = Double.parseDouble(sub[5]);
-                i++;
             }
+            i++;
         }
+
         if (i != 4) {
-            System.out.println("file male formattato:\ncoefficienti della funzione obbiettivo\nmatrice dei coefficienti\n\n" +
+            System.out.println("file male formattato:\ncoefficienti della funzione obbiettivo\n" +
+                    "matrice dei coefficienti\n\n" +
                     "Esempio:\n2 1\n1 1 1 0 0 1\n1 3 0 1 0 6\n1 0 0 0 1 4\n");
             exit(1);
         }
