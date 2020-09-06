@@ -11,7 +11,6 @@ class Simplesso {
     public static void main(String[] args) {
         final int RIGA = 0;
         final int COLONNA = 1;
-        final String ELEMENTO = "VALORE";
 
         boolean debug = true;
 
@@ -40,7 +39,7 @@ class Simplesso {
             System.out.println("colonna variabile entrante " + matrice.trovaVariabileEntrante());
             System.out.println("colonna " + matrice.pivot(COLONNA));
             System.out.println("riga " + matrice.pivot(RIGA));
-            System.out.println("elemento " + matrice.pivot(ELEMENTO));
+            System.out.println("elemento " + matrice.pivot());
         }
 
         while (!trovatoMassimo && !illimitata && !troppiCicli) {

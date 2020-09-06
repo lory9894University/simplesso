@@ -156,7 +156,7 @@ class Matrice {
         return pivot[indice];
     }
 
-    public double pivot(String indice) {
+    public double pivot() {
         trovaVariabileUscente();
         return matrice[pivot[0]][pivot[1]];
     }
