@@ -101,37 +101,7 @@ class Matrice {
         return result;
     }
 
-    /*TODO: da testare*/
-
-    /*
-    Ho modificato la funzione. ho lasciato la vecchia commentata. ho introdotto una variabile di metodo che ho chiamato pivot.
-     */
     public void trovaVariabileUscente() {
-        /*
-        if (debugIsOn) System.out.println("uno");
-        int[] elemento = {-1, trovaVariabileEntrante()};
-
-        if (elemento[1] > -1) {
-            if (debugIsOn) System.out.println("colonna " + elemento[1]);
-
-            double minimo = Double.MAX_VALUE;
-            for (int i = 0; i < matrice.length && elemento[1] > -1; i++) {
-                double valoreI = matrice[i][elemento[1]] / coefficientiNoti[i];
-                if (valoreI > 0 && valoreI < minimo) {
-                    if (debugIsOn) System.out.println("i " + i + " valoreI " + valoreI);
-                    minimo = valoreI;
-                    elemento[1] = i;
-                }
-                if (debugIsOn) System.out.println("minimo " + minimo);
-            }
-        }
-
-        if (debugIsOn && elemento[0] > -1 && elemento[1] > -1) {
-            System.out.println("riga " + elemento[0] + " colonna " + elemento[1]);
-            System.out.println("pivot " + matrice[elemento[0]][elemento[1]]);
-        }
-
-         */
         int colonna = trovaVariabileEntrante();
         int riga = -1;
 
