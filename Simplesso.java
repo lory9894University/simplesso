@@ -9,6 +9,11 @@ import static java.util.stream.Collectors.toList;
 
 class Simplesso {
     public static void main(String[] args) {
+        final int RIGA = 0;
+        final int COLONNA = 1;
+        final String ELEMENTO = "VALORE";
+
+        boolean debug = true;
 
         Matrice matrice;
         boolean illimitata = false;
@@ -31,8 +36,15 @@ class Simplesso {
 
         boolean trovatoMassimo = matrice.trovaVariabileEntrante() == -1;
 
+        if (debug) {
+            System.out.println("colonna variabile entrante " + matrice.trovaVariabileEntrante());
+            System.out.println("colonna " + matrice.pivot(COLONNA));
+            System.out.println("riga " + matrice.pivot(RIGA));
+            System.out.println("elemento " + matrice.pivot(ELEMENTO));
+        }
+
         while (!trovatoMassimo && !illimitata && !troppiCicli) {
-            illimitata = matrice.trovaVariabileUscente()[0] == -1;
+            illimitata = matrice.pivot(RIGA) == -1;
 
             trovatoMassimo = matrice.trovaVariabileEntrante() == -1;
             troppiCicli = ++counter == 2;

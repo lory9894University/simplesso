@@ -3,12 +3,13 @@ import java.text.NumberFormat;
 import java.util.Scanner;
 
 class Matrice {
-    private boolean debugIsOn = false;
+    private final boolean debugIsOn = false;
 
     private double[][] matrice = new double[3][5];
     private double[] coefficientiNoti = new double[3];
     private double[] funzioneObiettivo = new double[5];
-    NumberFormat nf = new DecimalFormat("##.###");
+    private int[] pivot = new int[2];
+    final NumberFormat nf = new DecimalFormat("##.###");
 
     public Matrice(double[][] matrice, double[] coefficientiNoti, double[] funzioneObiettivo) {
         this.matrice = matrice;
@@ -101,7 +102,12 @@ class Matrice {
     }
 
     /*TODO: da testare*/
-    public int[] trovaVariabileUscente() {
+
+    /*
+    Ho modificato la funzione. ho lasciato la vecchia commentata. ho introdotto una variabile di metodo che ho chiamato pivot.
+     */
+    public void trovaVariabileUscente() {
+        /*
         if (debugIsOn) System.out.println("uno");
         int[] elemento = {-1, trovaVariabileEntrante()};
 
@@ -125,7 +131,34 @@ class Matrice {
             System.out.println("pivot " + matrice[elemento[0]][elemento[1]]);
         }
 
-        return elemento;
+         */
+        int colonna = trovaVariabileEntrante();
+        int riga = -1;
+
+        if (colonna > -1) {
+            double minimo = Double.MAX_VALUE;
+
+            for (int i = 0; i < matrice.length; i++) {
+                double elementoIJ =  coefficientiNoti[i] / matrice[i][colonna];
+                if (elementoIJ > 0 && elementoIJ < minimo) {
+                    minimo = elementoIJ;
+                    riga = i;
+                }
+            }
+        }
+
+        pivot[0] = riga;
+        pivot[1] = colonna;
+    }
+
+    public int pivot(int indice) {
+        trovaVariabileUscente();
+        return pivot[indice];
+    }
+
+    public double pivot(String indice) {
+        trovaVariabileUscente();
+        return matrice[pivot[0]][pivot[1]];
     }
 
     public void stampaFunzioneObiettivo() {
