@@ -6,15 +6,23 @@ class Matrice {
     private final boolean debugIsOn = false;
 
     private double[][] matrice = new double[3][5];
-    private double[] coefficientiNoti = new double[3];
-    private double[] funzioneObiettivo = new double[5];
+    private double[] terminiNoti = new double[3];
+    private double[] funzioneObiettivo = new double[6];
     private int[] posizionePivot = new int[2];
-    final NumberFormat nf = new DecimalFormat("##.###");
+    private int indiceVaribileEntrante;
+    private final NumberFormat nf = new DecimalFormat("##.###");
 
-    public Matrice(double[][] matrice, double[] coefficientiNoti, double[] funzioneObiettivo) {
+    public Matrice(double[][] matrice, double[] terminiNoti, double[] funzioneObiettivo) {
+        int i;
         this.matrice = matrice;
-        this.coefficientiNoti = coefficientiNoti;
-        this.funzioneObiettivo = funzioneObiettivo;
+        this.terminiNoti = terminiNoti;
+        for (i = 0; i <funzioneObiettivo.length ; i++) {
+            this.funzioneObiettivo[i]=funzioneObiettivo[i];
+        }
+        while (i<this.funzioneObiettivo.length){
+            this.funzioneObiettivo[i]=0;
+            i++;
+        }
     }
 
     public Matrice() {
@@ -35,10 +43,14 @@ class Matrice {
                 matrice[i][j] = keyboard.nextInt();
             }
             System.out.print("coefficiente " + (i + 1) + "\t");
-            coefficientiNoti[i] = keyboard.nextInt();
+            terminiNoti[i] = keyboard.nextInt();
             System.out.println();
 
         }
+    }
+
+    public int getIndiceVaribileEntrante() {
+        return indiceVaribileEntrante;
     }
 
     public void cambioBase() {
@@ -60,7 +72,7 @@ class Matrice {
         if (matrice[rigaPivot][colonnaPivot] != 1) {
             for (int i = 0; i < matrice[rigaPivot].length; i++) {
                 matrice[rigaPivot][i] = matrice[rigaPivot][i] == 0 ? 0 : matrice[rigaPivot][i] / valorePivot;
-                coefficientiNoti[rigaPivot] = coefficientiNoti[rigaPivot] == 0 ? 0 : coefficientiNoti[rigaPivot] / valorePivot;
+                terminiNoti[rigaPivot] = terminiNoti[rigaPivot] == 0 ? 0 : terminiNoti[rigaPivot] / valorePivot;
             }
         }
 
@@ -73,14 +85,20 @@ class Matrice {
             valoreMoltiplicativo = matrice[i][colonnaPivot] / 1; // diviso 1 per sapere se mettere il segno meno
             for (int j = 0; j < matrice[i].length; j++) {
                 matrice[i][j] = matrice[i][j] - valoreMoltiplicativo * matrice[rigaPivot][j];
-                coefficientiNoti[i] = coefficientiNoti[i] - valoreMoltiplicativo * coefficientiNoti[rigaPivot];
             }
+            terminiNoti[i] = terminiNoti[i] - valoreMoltiplicativo * terminiNoti[rigaPivot];
         }
 
     }
 
     public void aggiornaFunzioneObbiettivo() {
-
+        double costanteMoltiplicativa = funzioneObiettivo[indiceVaribileEntrante];
+        funzioneObiettivo[indiceVaribileEntrante]=0;
+        for (int i = 0; i < matrice[posizionePivot[0]].length; i++) {
+            if (i!=posizionePivot[1])
+                funzioneObiettivo[i]-=costanteMoltiplicativa*matrice[posizionePivot[0]][i];
+        }
+        funzioneObiettivo[5]+=terminiNoti[posizionePivot[0]];
     }
 
     public int trovaVariabileEntrante() {
@@ -99,18 +117,19 @@ class Matrice {
             else System.out.println("end!");
         }
 
+        this.indiceVaribileEntrante=result;
         return result;
     }
 
     public void trovaVariabileUscente() {
-        int colonna = trovaVariabileEntrante();
+        int colonna = indiceVaribileEntrante;
         int riga = -1;
 
         if (colonna > -1) {
             double minimo = Double.MAX_VALUE;
 
             for (int i = 0; i < matrice.length; i++) {
-                double elementoIJ =  coefficientiNoti[i] / matrice[i][colonna];
+                double elementoIJ =  terminiNoti[i] / matrice[i][colonna];
                 if (elementoIJ > 0 && elementoIJ < minimo) {
                     minimo = elementoIJ;
                     riga = i;
@@ -136,11 +155,13 @@ class Matrice {
         char[] c = {'₁', '₂', '₃', '₄', '₅'};
 
         System.out.println("funzione obiettivo");
-        for (int i = 0; i < funzioneObiettivo.length; i++) {
+        for (int i = 0; i < funzioneObiettivo.length-1; i++) {
             if (funzioneObiettivo[i] != 0) {
                 System.out.print(nf.format(funzioneObiettivo[i]) + "x" + c[i] + " ");
             }
         }
+        if (funzioneObiettivo[5]!=0)
+            System.out.println(nf.format(funzioneObiettivo[5]));
         System.out.println("\n");
     }
 
@@ -152,7 +173,7 @@ class Matrice {
             for (int j = 0; j < matrice[i].length; j++) {
                 System.out.print(nf.format(matrice[i][j]) + "\t");
             }
-            System.out.print("| " + nf.format(coefficientiNoti[i]));
+            System.out.print("| " + nf.format(terminiNoti[i]));
             System.out.println();
         }
     }
