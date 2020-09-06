@@ -8,7 +8,7 @@ class Matrice {
     private double[][] matrice = new double[3][5];
     private double[] coefficientiNoti = new double[3];
     private double[] funzioneObiettivo = new double[5];
-    private int[] pivot = new int[2];
+    private final int[] pivot = new int[2];
     final NumberFormat nf = new DecimalFormat("##.###");
 
     public Matrice(double[][] matrice, double[] coefficientiNoti, double[] funzioneObiettivo) {

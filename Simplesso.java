@@ -20,8 +20,11 @@ class Simplesso {
         int counter = 0;
 
         if (args.length == 0) {
-            System.out.println("non è stato specificato alcun argomento, procedo  tramite riga di comando\n");
-            matrice = new Matrice();
+            if (debug) matrice = fileParsing("prova.txt");
+            else {
+                System.out.println("non è stato specificato alcun argomento, procedo  tramite riga di comando\n");
+                matrice = new Matrice();
+            }
         } else {
             if (args[0].equals("-h")) {
                 System.out.println("inserire come argomento il path del file contenente:\n" +
