@@ -8,7 +8,7 @@ class Matrice {
     private double[][] matrice = new double[3][5];
     private double[] coefficientiNoti = new double[3];
     private double[] funzioneObiettivo = new double[5];
-    private final int[] pivot = new int[2];
+    private int[] posizionePivot = new int[2];
     final NumberFormat nf = new DecimalFormat("##.###");
 
     public Matrice(double[][] matrice, double[] coefficientiNoti, double[] funzioneObiettivo) {
@@ -41,10 +41,12 @@ class Matrice {
         }
     }
 
-    public void cambioBase(int rigaPivot, int colonnaPivot) {
+    public void cambioBase() {
     /*if (matrice[rigaPivot][colonnaPivot]==0){
       FIXME:caso possibile ma mai incontrato in un esercizio. se lo trovo lo includo
     }*/
+        int rigaPivot=posizionePivot[0];
+        int colonnaPivot=posizionePivot[1];
         double valoreMoltiplicativo;
         double valorePivot = matrice[rigaPivot][colonnaPivot];
 
@@ -75,11 +77,10 @@ class Matrice {
             }
         }
 
-        this.aggiornaFunzioneObbiettivo();
     }
 
     public void aggiornaFunzioneObbiettivo() {
-        //TODO:da scrivere
+
     }
 
     public int trovaVariabileEntrante() {
@@ -117,18 +118,18 @@ class Matrice {
             }
         }
 
-        pivot[0] = riga;
-        pivot[1] = colonna;
+        posizionePivot[0] = riga;
+        posizionePivot[1] = colonna;
     }
 
     public int pivot(int indice) {
         trovaVariabileUscente();
-        return pivot[indice];
+        return posizionePivot[indice];
     }
 
     public double pivot() {
         trovaVariabileUscente();
-        return matrice[pivot[0]][pivot[1]];
+        return matrice[posizionePivot[0]][posizionePivot[1]];
     }
 
     public void stampaFunzioneObiettivo() {
