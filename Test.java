@@ -3,19 +3,27 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.spi.AbstractResourceBundleProvider;
 
 import static java.lang.System.exit;
 import static java.util.stream.Collectors.toList;
 
 class Test {
     public static void main(String[] args) {
-        Matrice matrice= fileParsing("prova.txt");
+        boolean limitato=true;
+
+        Matrice matrice = fileParsing("prova.txt");
         matrice.stampaMatrice();
-        matrice.trovaVariabileEntrante();
-        matrice.trovaVariabileUscente();
-        matrice.cambioBase();
-        matrice.aggiornaFunzioneObbiettivo();
-        matrice.stampaMatrice();
+
+        while(limitato) {
+            if (matrice.trovaVariabileEntrante() <= 0)
+                break;
+            limitato=matrice.trovaVariabileUscente();
+            matrice.cambioBase();
+            matrice.aggiornaFunzioneObbiettivo();
+            matrice.stampaMatrice();
+        }
+        matrice.printVariabiliInBase();
 
     }
 

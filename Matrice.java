@@ -49,10 +49,6 @@ class Matrice {
         }
     }
 
-    public int getIndiceVaribileEntrante() {
-        return indiceVaribileEntrante;
-    }
-
     public void cambioBase() {
     /*if (matrice[rigaPivot][colonnaPivot]==0){
       FIXME:caso possibile ma mai incontrato in un esercizio. se lo trovo lo includo
@@ -98,15 +94,15 @@ class Matrice {
             if (i!=posizionePivot[1])
                 funzioneObiettivo[i]-=costanteMoltiplicativa*matrice[posizionePivot[0]][i];
         }
-        funzioneObiettivo[5]+=terminiNoti[posizionePivot[0]];
+        funzioneObiettivo[5]+=costanteMoltiplicativa*terminiNoti[posizionePivot[0]];
     }
 
-    public int trovaVariabileEntrante() {
+    public double trovaVariabileEntrante() {
         int result = -1;
         double max = -1;
 
         for (int i = 0; i < funzioneObiettivo.length; i++) {
-            if (funzioneObiettivo[i] > 0 && funzioneObiettivo[i] > max) {
+            if (funzioneObiettivo[i] > 0 && funzioneObiettivo[i] > max && i!=5) {
                 max = funzioneObiettivo[i];
                 result = i;
             }
@@ -118,10 +114,10 @@ class Matrice {
         }
 
         this.indiceVaribileEntrante=result;
-        return result;
+        return max;
     }
 
-    public void trovaVariabileUscente() {
+    public boolean trovaVariabileUscente() {
         int colonna = indiceVaribileEntrante;
         int riga = -1;
 
@@ -137,8 +133,11 @@ class Matrice {
             }
         }
 
+        if (riga == posizionePivot[0] && colonna== posizionePivot[1])//il pivot non cambia, la funzione è illimitata
+            return false;
         posizionePivot[0] = riga;
         posizionePivot[1] = colonna;
+        return true;
     }
 
     public int pivot(int indice) {
@@ -166,15 +165,32 @@ class Matrice {
     }
 
     public void stampaMatrice() {
-        stampaFunzioneObiettivo();
-
         System.out.println("stampo la matrice");
         for (int i = 0; i < matrice.length; i++) {
             for (int j = 0; j < matrice[i].length; j++) {
                 System.out.print(nf.format(matrice[i][j]) + "\t");
             }
             System.out.print("| " + nf.format(terminiNoti[i]));
-            System.out.println();
+            System.out.println("");
         }
+        System.out.println();
+        stampaFunzioneObiettivo();
+    }
+
+    public void printVariabiliInBase(){
+        char[] c = {'₁', '₂', '₃', '₄', '₅'};
+        int virgole=2;
+
+        System.out.print("base massima: (");
+        for (int i = 0; i < funzioneObiettivo.length-1; i++) {
+            if (funzioneObiettivo[i] == 0) {
+                System.out.print("x" + c[i]);
+                if (virgole>0) {
+                    System.out.print(",");
+                    virgole--;
+                }
+            }
+        }
+        System.out.println(")\n");
     }
 }
