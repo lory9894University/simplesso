@@ -9,22 +9,13 @@ import static java.util.stream.Collectors.toList;
 
 class Simplesso {
     public static void main(String[] args) {
-        final int RIGA = 0;
-        final int COLONNA = 1;
-
-        boolean debug = true;
-
         Matrice matrice;
-        boolean illimitata = false;
-        boolean troppiCicli = false;
-        int counter = 0;
+        boolean limitato = true;
+        
 
         if (args.length == 0) {
-            if (debug) matrice = fileParsing("prova.txt");
-            else {
                 System.out.println("non è stato specificato alcun argomento, procedo  tramite riga di comando\n");
                 matrice = new Matrice();
-            }
         } else {
             if (args[0].equals("-h")) {
                 System.out.println("inserire come argomento il path del file contenente:\n" +
@@ -36,26 +27,15 @@ class Simplesso {
         }
         matrice.stampaMatrice();
 
-        boolean trovatoMassimo = matrice.trovaVariabileEntrante() == -1;
-
-        if (debug) {
-            System.out.println("colonna variabile entrante " + matrice.trovaVariabileEntrante());
-            System.out.println("colonna " + matrice.pivot(COLONNA));
-            System.out.println("riga " + matrice.pivot(RIGA));
-            System.out.println("elemento " + matrice.pivot());
+        while(limitato) {
+            if (matrice.trovaVariabileEntrante() <= 0)
+                break;
+            limitato=matrice.trovaVariabileUscente();
+            matrice.cambioBase();
+            matrice.aggiornaFunzioneObbiettivo();
+            matrice.stampaMatrice();
         }
-
-        while (!trovatoMassimo && !illimitata && !troppiCicli) {
-            illimitata = matrice.pivot(RIGA) == -1;
-
-            trovatoMassimo = matrice.trovaVariabileEntrante() == -1;
-            troppiCicli = ++counter == 2;
-        }
-
-        if (trovatoMassimo) System.out.println("trovata la soluzione");
-        else if (illimitata) System.out.println("il sistema é illimitato");
-        else System.out.println("errore!");
-
+        matrice.printVariabiliInBase();
     }
 
     static public Matrice fileParsing(String file) {
