@@ -18,12 +18,15 @@ class Simplesso {
                 matrice = new Matrice();
         } else {
             if (args[0].equals("-h")) {
-                System.out.println("inserire come argomento il path del file contenente:\n" +
+                System.out.println("java Simplesso <file> [<riga pivot><colonna pivot>]\ninserire gli argomenti riguardo al pivot solo se si intende partire da una base in particolare\n" +
+                        "inserire come argomento il path del file contenente:\n" +
                         "coefficienti della funzione obbiettivo\nmatrice dei coefficienti\n\n" +
                         "Esempio:\n2 1\n1 1 1 0 0 1\n1 3 0 1 0 6\n1 0 0 0 1 4\n");
+                exit(0);
             }
             matrice = fileParsing(args[0]);
-
+            if (args.length == 3)
+                matrice.cambioBase(Integer.parseInt(args[1]),Integer.parseInt(args[2]));
         }
         matrice.stampaMatrice();
 
@@ -31,7 +34,7 @@ class Simplesso {
             if (matrice.trovaVariabileEntrante() <= 0)
                 break;
             limitato=matrice.trovaVariabileUscente();
-//            System.out.println("entra X" + matrice.getVaribileEntrante() + "\nesce X" + matrice.getUscente() + "\n");
+            System.out.println("entra x" + matrice.getVaribileEntrante() + "\nesce x" + matrice.getUscente() + "\n");
             matrice.cambioBase();
             matrice.aggiornaFunzioneObbiettivo();
             matrice.stampaMatrice();
