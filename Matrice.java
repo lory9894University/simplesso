@@ -11,6 +11,7 @@ class Matrice {
     private int[] posizionePivot = new int[2];
     private int indiceVaribileEntrante;
     private final NumberFormat nf = new DecimalFormat("##.###");
+    private char[] c = {'₁', '₂', '₃', '₄', '₅'};
 
     public Matrice(double[][] matrice, double[] terminiNoti, double[] funzioneObiettivo) {
         int i;
@@ -49,6 +50,21 @@ class Matrice {
         }
     }
 
+    public char getUscente() {//TODO:non fuziona, non so come calcolare la variabile uscente
+        int count=0;
+        int i;
+        for (i = 0; count < posizionePivot[0] && i < funzioneObiettivo.length-1; i++) {
+            if (funzioneObiettivo[i] == 0)
+                count++;
+        }
+        return c[i];
+    }
+
+    public char getVaribileEntrante() {
+        return c[indiceVaribileEntrante];
+    }
+
+
     public void cambioBase() {
     /*if (matrice[rigaPivot][colonnaPivot]==0){
       FIXME:caso possibile ma mai incontrato in un esercizio. se lo trovo lo includo
@@ -68,8 +84,8 @@ class Matrice {
         if (matrice[rigaPivot][colonnaPivot] != 1) {
             for (int i = 0; i < matrice[rigaPivot].length; i++) {
                 matrice[rigaPivot][i] = matrice[rigaPivot][i] == 0 ? 0 : matrice[rigaPivot][i] / valorePivot;
-                terminiNoti[rigaPivot] = terminiNoti[rigaPivot] == 0 ? 0 : terminiNoti[rigaPivot] / valorePivot;
             }
+            terminiNoti[rigaPivot] = terminiNoti[rigaPivot] == 0 ? 0 : terminiNoti[rigaPivot] / valorePivot;
         }
 
         // riduzione delle altre 2 righe per ottenere un vettore linearmente indipendente (porto a zero i valori aventi
@@ -151,8 +167,6 @@ class Matrice {
     }
 
     public void stampaFunzioneObiettivo() {
-        char[] c = {'₁', '₂', '₃', '₄', '₅'};
-
         System.out.println("funzione obiettivo");
         for (int i = 0; i < funzioneObiettivo.length-1; i++) {
             if (funzioneObiettivo[i] != 0) {
@@ -178,7 +192,6 @@ class Matrice {
     }
 
     public void printVariabiliInBase(){
-        char[] c = {'₁', '₂', '₃', '₄', '₅'};
         int virgole=2;
 
         System.out.print("base massima: (");
