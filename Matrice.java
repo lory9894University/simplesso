@@ -3,16 +3,15 @@ import java.text.NumberFormat;
 import java.util.Scanner;
 
 class Matrice {
-    private final boolean debugIsOn = false;
 
     private double[][] matrice = new double[3][5];
-    private int []indiciBase = new int[3];
+    private final int []indiciBase = new int[3];
     private double[] terminiNoti = new double[3];
-    private double[] funzioneObiettivo = new double[6];
-    private int[] posizionePivot = new int[2];
+    private final double[] funzioneObiettivo = new double[6];
+    private final int[] posizionePivot = new int[2];
     private int indiceVaribileEntrante;
     private final NumberFormat nf = new DecimalFormat("##.###");
-    private char[] c = {'₁', '₂', '₃', '₄', '₅'};
+    private final char[] c = {'₁', '₂', '₃', '₄', '₅'};
 
     public Matrice(double[][] matrice, double[] terminiNoti, double[] funzioneObiettivo) {
         int i,nuovoIndice=0;
@@ -118,44 +117,8 @@ class Matrice {
 
     }
 
-    public void cambioBase() {
-    /*if (matrice[rigaPivot][colonnaPivot]==0){
-      FIXME:caso possibile ma mai incontrato in un esercizio. se lo trovo lo includo
-    }*/
-        int rigaPivot=posizionePivot[0];
-        int colonnaPivot=posizionePivot[1];
-        double valoreMoltiplicativo;
-        double valorePivot = matrice[rigaPivot][colonnaPivot];
-
-        if (matrice[rigaPivot][colonnaPivot] < 0) {
-            for (int i = 0; i < matrice[rigaPivot].length; i++) {
-                matrice[rigaPivot][i] = -matrice[rigaPivot][i];
-            }
-        }
-
-        //riduzione della riga del pivot in modo che quest'ultimo sia 1
-        if (matrice[rigaPivot][colonnaPivot] != 1) {
-            for (int i = 0; i < matrice[rigaPivot].length; i++) {
-                matrice[rigaPivot][i] = matrice[rigaPivot][i] == 0 ? 0 : matrice[rigaPivot][i] / valorePivot;
-            }
-            terminiNoti[rigaPivot] = terminiNoti[rigaPivot] == 0 ? 0 : terminiNoti[rigaPivot] / valorePivot;
-        }
-
-        // riduzione delle altre 2 righe per ottenere un vettore linearmente indipendente (porto a zero i valori aventi
-        // la stessa colonna del pivot)
-        for (int i = 0; i < matrice.length; i++) {
-            if (i == rigaPivot) //questo procedimento non va ovviamente eseguito per la riga del pivot
-                continue;
-
-            valoreMoltiplicativo = matrice[i][colonnaPivot] / 1; // diviso 1 per sapere se mettere il segno meno
-            for (int j = 0; j < matrice[i].length; j++) {
-                matrice[i][j] = matrice[i][j] - valoreMoltiplicativo * matrice[rigaPivot][j];
-            }
-            terminiNoti[i] = terminiNoti[i] - valoreMoltiplicativo * terminiNoti[rigaPivot];
-        }
-
-        indiciBase[rigaPivot]=indiceVaribileEntrante;
-
+    public void cambioBase() { //wrapper di cambioBase con parametri
+        cambioBase(posizionePivot[0],posizionePivot[1]);
     }
 
     public void aggiornaFunzioneObbiettivo() {
@@ -177,11 +140,6 @@ class Matrice {
                 max = funzioneObiettivo[i];
                 result = i;
             }
-        }
-
-        if (debugIsOn) {
-            if (result > -1) System.out.println("result " + result);
-            else System.out.println("end!");
         }
 
         this.indiceVaribileEntrante=result;
@@ -211,11 +169,6 @@ class Matrice {
         return true;
     }
 
-    public int pivot(int indice) {
-        trovaVariabileUscente();
-        return posizionePivot[indice];
-    }
-
     public double pivot() {
         trovaVariabileUscente();
         return matrice[posizionePivot[0]][posizionePivot[1]];
@@ -241,7 +194,7 @@ class Matrice {
                 System.out.print(nf.format(matrice[i][j]) + "\t");
             }
             System.out.print("| " + nf.format(terminiNoti[i]));
-            System.out.println("");
+            System.out.println();
         }
         System.out.println();
         stampaFunzioneObiettivo();
@@ -251,9 +204,9 @@ class Matrice {
         int virgole=2;
 
         System.out.print("base massima: (");
-        for (int i = 0; i < indiciBase.length; i++) {
-            System.out.print("x" + c[indiciBase[i]]);
-            if (virgole>0) {
+        for (int j : indiciBase) {
+            System.out.print("x" + c[j]);
+            if (virgole > 0) {
                 System.out.print(",");
                 virgole--;
             }
