@@ -34,7 +34,7 @@ class Simplesso {
             if (matrice.trovaVariabileEntrante() <= 0)
                 break;
             massimo=matrice.trovaVariabileUscente();
-            System.out.println("entra x" + matrice.getVaribileEntrante() + "\nesce x" + matrice.getUscente() + "\n");
+            System.out.println("entra x" + matrice.getVaribileEntrante() + "\nesce x" + matrice.getVariabileUscente() + "\n");
             matrice.cambioBase();
             matrice.aggiornaFunzioneObbiettivo();
             matrice.stampaMatrice();

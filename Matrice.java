@@ -73,7 +73,7 @@ class Matrice {
         trovaVariabileEntrante();
     }
 
-    public char getUscente() {
+    public char getVariabileUscente() {
         return c[indiciBase[posizionePivot[0]]];
     }
 
@@ -114,6 +114,7 @@ class Matrice {
             }
             terminiNoti[i] = terminiNoti[i] - valoreMoltiplicativo * terminiNoti[rigaPivot];
         }
+        indiciBase[posizionePivot[0]]=indiceVaribileEntrante;
 
     }
 
