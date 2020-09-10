@@ -166,6 +166,7 @@ class Matrice {
             return true;
         posizionePivot[0] = riga;
         posizionePivot[1] = colonna;
+
         return false;
     }
 
