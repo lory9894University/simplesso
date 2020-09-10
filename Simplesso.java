@@ -10,7 +10,7 @@ import static java.util.stream.Collectors.toList;
 class Simplesso {
     public static void main(String[] args) {
         Matrice matrice;
-        boolean limitato = true;
+        boolean massimo = false;
         
 
         if (args.length == 0) {
@@ -30,10 +30,10 @@ class Simplesso {
         }
         matrice.stampaMatrice();
 
-        while(limitato) {
+        while(!massimo) {
             if (matrice.trovaVariabileEntrante() <= 0)
                 break;
-            limitato=matrice.trovaVariabileUscente();
+            massimo=matrice.trovaVariabileUscente();
             System.out.println("entra x" + matrice.getVaribileEntrante() + "\nesce x" + matrice.getUscente() + "\n");
             matrice.cambioBase();
             matrice.aggiornaFunzioneObbiettivo();
